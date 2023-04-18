@@ -118,7 +118,7 @@ let semillas = [
       temporada: "calor",
       precio: 500,
       stock: 15,
-      imagen: "https://images.ecestaticos.com/qlDwu4esDzGO4yOZwXFZLBi7vxQ=/84x66:1875x1412/557x418/filters:fill(white):format(jpg)/f.elconfidencial.com%2Foriginal%2Fd36%2F765%2F12d%2Fd3676512d1f4ea357fc924b2bef734e0.jpg"
+      imagen: "https://www.ecojardinmagico.com/wp-content/uploads/2022/05/Tomates-cherry-cultivar.jpg.webp"
     },
     {
       id: 16,
@@ -142,10 +142,10 @@ let semillas = [
       temporada: "frio",
       precio: 400,
       stock: 20,
-      imagen: ""
+      imagen: "https://www.infocampo.com.ar/wp-content/uploads/2020/05/ajo-huerta-infocampo.jpg"
     }
 ]
-
+let carrito = []
 let registroInicio = document.getElementById("registroInicio")
 let mostrarCarro = document.getElementById("mostrarCarro")
 
@@ -179,6 +179,13 @@ iniciarSesion.addEventListener("click", () => {
 let contenedorProductos = document.getElementById("contenedorDeProductos")
 armarTarjetas(semillas)
 
+let verCarro = document.getElementById("verCarrito")
+verCarro.addEventListener("click", () => {
+  registroInicio.classList.add("ocultar")
+  mostrarCarro.classList.add("ocultar")
+  carro.classList.remove("ocultar")
+})
+
 let inputs = document.getElementsByClassName("input")
 for (const input of inputs) {
   input.addEventListener("click", filtrarPorTemporada)
@@ -203,48 +210,56 @@ function armarTarjetas(semillas) {
       <h2>${nombre}</h2>
       <p>temporada: ${temporada} </p>
       <p>Precio: $${precio}</p>
-      <div class=imagen style="background-image: url(${imagen})"></div>
-      <button class=comprar id=${id}>Comprar</button>
+      <div class="imagen" style="background-image: url(${imagen})"></div>
+      <button class="comprar" id=${id}>Comprar</button>
     `
     contenedorProductos.append(tarjeta)
+
+    let botonIdCompra = document.getElementById(id)
+    botonIdCompra.addEventListener("click", agregarAlCarro)
   })
 }
 
-let botonIdCompra = document.getElementsByClassName("comprar")
-botonIdCompra.addEventListener("click", () => {
-  let carrito = []
-  let semillaBuscada = semillas.find(semillas => semillas.id === botonIdCompra)
-  if (semillaBuscada){
-    carrito.push(semillaBuscada) 
+function agregarAlCarro(e){
+  let semillaBuscada = semillas.find(semillas => semillas.id === Number(e.target.id))
+  if(carrito.some(semillas => semillas.id == semillaBuscada.id)) {
+    let posicion = carrito.findIndex(semilla => semilla.id == semillaBuscada.id)
+    carrito[posicion].unidades++
+    carrito[posicion].precioTotal = carrito[posicion].precio * carrito[posicion].unidades 
+  } else {
+    carrito.push({
+      id: semillaBuscada.id,
+      nombre: semillaBuscada.nombre,
+      precio: semillaBuscada.precio,
+      unidades: 1,
+      precioTotal: semillaBuscada.precio,
+      imagen: semillaBuscada.imagen
+    })
   }
-})
+  armarTarjetasCarro(carrito)
+}
 
-
-//carrito
-let carro = document.getElementById("carro")
-let verCarro = document.getElementById("verCarrito")
-let seguirComprando= document.getElementById("inicio")
-
-function armarTarjetasCarro(arrayDeCarro) {
-  arrayDeCarro.forEach(({nombre, id, imagen, precio, temporada}) => {
+function armarTarjetasCarro(carrito) {
+  contenedorCarro.innerHTML = ""
+  carrito.forEach(({nombre, imagen, precio, unidades, precioTotal}) => {
     let tarjeta = document.createElement("div")
     tarjeta.className = "productoSemillas"
     tarjeta.innerHTML = `
       <h2>${nombre}</h2>
-      <p>temporada: ${temporada} </p>
+      <p>unidades: ${unidades}</p>
       <p>Precio: $${precio}</p>
-      <div class=imagen style="background-img: url(${imagen})"></div>
-      <button class=comprar id=${id}>Comprar</button>
+      <div class="imagen" style="background-image: url(${imagen})"></div>
+      <p>Precio Total: $${precioTotal}</p>
     `
-    carro.append(tarjeta)
+    contenedorCarro.append(tarjeta)
   })
 }
 
-verCarro.addEventListener("click", () => {
-  registroInicio.classList.add("ocultar")
-  mostrarCarro.classList.add("ocultar")
-  carro.classList.remove("ocultar")
-})
+//carrito
+let carro = document.getElementById("carro")
+let seguirComprando = document.getElementById("inicio")
+let contenedorCarro = document.getElementById("contenedorCarro")
+
 seguirComprando.addEventListener("click", () => {
   registroInicio.classList.add("ocultar")
   mostrarCarro.classList.remove("ocultar")
