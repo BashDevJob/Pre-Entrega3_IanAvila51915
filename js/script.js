@@ -145,7 +145,24 @@ let semillas = [
       imagen: "https://www.infocampo.com.ar/wp-content/uploads/2020/05/ajo-huerta-infocampo.jpg"
     }
 ]
+
+let contenedorCarro = document.getElementById("contenedorCarro")
+let botonComprar = document.getElementById("comprar")
+botonComprar.addEventListener("click", finalizarCompra)
+
+function finalizarCompra() {
+  alert("Muchas gracias por su compra")
+  localStorage.removeItem("carrito")
+  carrito = []
+  armarTarjetasCarro(carrito)
+}
+
 let carrito = []
+if (localStorage.getItem("carrito")) {
+  carrito = JSON.parse(localStorage.getItem("carrito"))
+  armarTarjetasCarro(carrito)
+}
+
 let registroInicio = document.getElementById("registroInicio")
 let mostrarCarro = document.getElementById("mostrarCarro")
 
@@ -236,6 +253,7 @@ function agregarAlCarro(e){
       imagen: semillaBuscada.imagen
     })
   }
+  localStorage.setItem("carrito", JSON.stringify(carrito))
   armarTarjetasCarro(carrito)
 }
 
@@ -258,7 +276,6 @@ function armarTarjetasCarro(carrito) {
 //carrito
 let carro = document.getElementById("carro")
 let seguirComprando = document.getElementById("inicio")
-let contenedorCarro = document.getElementById("contenedorCarro")
 
 seguirComprando.addEventListener("click", () => {
   registroInicio.classList.add("ocultar")
