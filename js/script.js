@@ -151,7 +151,7 @@ let botonComprar = document.getElementById("comprar")
 botonComprar.addEventListener("click", finalizarCompra)
 
 function finalizarCompra() {
-  alert("Muchas gracias por su compra")
+  alert("Muchas gracias por su compra")   ///////////////// ACA IAN
   localStorage.removeItem("carrito")
   carrito = []
   armarTarjetasCarro(carrito)
@@ -177,6 +177,15 @@ registrarse.addEventListener("click", () => {
 })
 
 // INICIAR SESION
+function alertaIS(titulo, icon){
+  swal.fire({
+    title: titulo,
+    icon: icon,
+    showConfirmButton: false,
+    timer: 1350
+  })
+}
+
 let usuarioLogn = document.getElementById("usuarioLogn")
 let contraseniaLong = document.getElementById("contraseniaLogn")
 let iniciarSesion = document.getElementById("iniciarSesion")
@@ -184,11 +193,12 @@ let iniciarSesion = document.getElementById("iniciarSesion")
 iniciarSesion.addEventListener("click", () => {
   let infoUsuario = JSON.parse(localStorage.getItem("infoUsuario"))
   if (infoUsuario.usuario == usuarioLogn.value && infoUsuario.contrasenia == contraseniaLong.value) {
-    alert("Bienvenido")   
+    alertaIS("todo correcto", "success")
+    registroInicio.classList.remove("mostrar")
     registroInicio.classList.add("ocultar")
     mostrarCarro.classList.remove("ocultar")
   } else {
-    alert("Datos incorrectos, reintente")
+    alertaIS("hubo un error", "error")
   }
 })
 
@@ -203,7 +213,7 @@ verCarro.addEventListener("click", () => {
   carro.classList.remove("ocultar")
 })
 
-let inputs = document.getElementsByClassName("input")
+let inputs = document.getElementsByClassName("form-check-input")
 for (const input of inputs) {
   input.addEventListener("click", filtrarPorTemporada)
 }
@@ -224,11 +234,15 @@ function armarTarjetas(semillas) {
     let tarjeta = document.createElement("div")
     tarjeta.className = "productoSemillas"
     tarjeta.innerHTML = `
-      <h2>${nombre}</h2>
-      <p>temporada: ${temporada} </p>
-      <p>Precio: $${precio}</p>
-      <div class="imagen" style="background-image: url(${imagen})"></div>
-      <button class="comprar" id=${id}>Comprar</button>
+      <div class="card" style="width: 18rem;">
+        <img src="${imagen}" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">${nombre}</h5>
+          <p class="card-text">temporada: ${temporada} </p>
+          <p>Precio: $${precio}</p>
+          <button type="button" id=${id} class="btn btn-outline-secondary">Comprar</button>
+        </div>
+      </div>
     `
     contenedorProductos.append(tarjeta)
 
