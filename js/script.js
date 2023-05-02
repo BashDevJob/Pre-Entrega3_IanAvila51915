@@ -244,7 +244,7 @@ function armarTarjetas(semillas) {
           <h5 class="card-title">${nombre}</h5>
           <p class="card-text">temporada: ${temporada} </p>
           <p>Precio: $${precio}</p>
-          <button type="button" id=${id} class="btn btn-outline-secondary">Comprar</button>
+          <button type="button" id=${id} class="btn btn-outline-secondary">Agregar al carrito</button>
         </div>
       </div>
     `
