@@ -151,7 +151,11 @@ let botonComprar = document.getElementById("comprar")
 botonComprar.addEventListener("click", finalizarCompra)
 
 function finalizarCompra() {
-  alert("Muchas gracias por su compra")   ///////////////// ACA IAN
+  swal.fire({
+    title: "Gracias por escogernos, su compra fue satisfactoria",
+    showConfirmButton: false,
+    timer: 1350
+  })
   localStorage.removeItem("carrito")
   carrito = []
   armarTarjetasCarro(carrito)
@@ -169,7 +173,7 @@ let mostrarCarro = document.getElementById("mostrarCarro")
 // REGISTRARSE
 let usuario = document.getElementById("usuario")
 let contrasenia = document.getElementById("contrasenia")
-let registrarse = document.getElementById("registrarse")
+let registrarse = document.getElementById("registrar")
 
 registrarse.addEventListener("click", () => {
   let infoUsuario = { usuario: usuario.value, contrasenia: contrasenia.value}
@@ -251,7 +255,23 @@ function armarTarjetas(semillas) {
   })
 }
 
+function lanzarTostada(){
+  Toastify({
+    text: "Producto agregado al carro",
+    duration: 3000,
+    newWindow: true,
+    close: false,
+    gravity: "top",
+    position: "right",
+    stopOnFocus: false,
+    style: {
+      background: "linear-gradient(to right, #83e783, #c9e783)",
+    },
+  }).showToast();
+}
+
 function agregarAlCarro(e){
+  lanzarTostada()
   let semillaBuscada = semillas.find(semillas => semillas.id === Number(e.target.id))
   if(carrito.some(semillas => semillas.id == semillaBuscada.id)) {
     let posicion = carrito.findIndex(semilla => semilla.id == semillaBuscada.id)
@@ -277,11 +297,15 @@ function armarTarjetasCarro(carrito) {
     let tarjeta = document.createElement("div")
     tarjeta.className = "productoSemillas"
     tarjeta.innerHTML = `
-      <h2>${nombre}</h2>
-      <p>unidades: ${unidades}</p>
-      <p>Precio: $${precio}</p>
-      <div class="imagen" style="background-image: url(${imagen})"></div>
-      <p>Precio Total: $${precioTotal}</p>
+      <div class="card" style="width: 18rem;">
+      <img src="${imagen}" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">${nombre}</h5>
+        <p>unidades: ${unidades}</p>
+        <p>Precio: $${precio}</p>
+        <p class="card-text">Precio Total: $${precioTotal}</p>
+      </div>
+    </div>
     `
     contenedorCarro.append(tarjeta)
   })
