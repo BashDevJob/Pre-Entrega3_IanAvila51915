@@ -242,14 +242,13 @@ function armarTarjetas(semillas) {
         <img src="${imagen}" class="card-img-top" alt="...">
         <div class="card-body">
           <h5 class="card-title">${nombre}</h5>
-          <p class="card-text">temporada: ${temporada} </p>
+          <p class="card-text">Temporada: ${temporada} </p>
           <p>Precio: $${precio}</p>
           <button type="button" id=${id} class="btn btn-outline-secondary">Agregar al carrito</button>
         </div>
       </div>
     `
     contenedorProductos.append(tarjeta)
-
     let botonIdCompra = document.getElementById(id)
     botonIdCompra.addEventListener("click", agregarAlCarro)
   })
@@ -301,7 +300,7 @@ function armarTarjetasCarro(carrito) {
       <img src="${imagen}" class="card-img-top" alt="...">
       <div class="card-body">
         <h5 class="card-title">${nombre}</h5>
-        <p>unidades: ${unidades}</p>
+        <p>Unidades: ${unidades}</p>
         <p>Precio: $${precio}</p>
         <p class="card-text">Precio Total: $${precioTotal}</p>
       </div>
